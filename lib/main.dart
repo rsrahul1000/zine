@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zine/bottom_nav_bar.dart';
-import 'package:zine/pages/home_page.dart';
-import 'package:zine/widgets/home/home_header.dart';
+import 'package:zine/wrapper.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,16 +7,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Zine',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Stack(
-          children: <Widget>[
-            HomeScreen(),
-            BottomNavigation(),
-            homeHeader(),
-          ],
-        ),
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.black,
+        dialogBackgroundColor: Colors.black,
+        primarySwatch: Colors.grey,
+        accentColor: Colors.black,
       ),
+      home: HomeWrapper(),
     );
   }
 }
