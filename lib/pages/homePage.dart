@@ -6,32 +6,22 @@ import 'package:zine/pages/SearchPage.dart';
 import 'package:zine/pages/TimeLinePage.dart';
 import 'package:zine/pages/UploadPage.dart';
 import 'package:zine/widgets/home/home_header.dart';
-
-// class HomePage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Stack(
-//         children: <Widget>[
-//           HomeScreen(),
-//           BottomNavigation(),
-//           homeHeader(),
-//         ],
-//       ),
-//     );
-
-//   }
-// }
+import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget {
+  // final Function signOutGoogle;
+  // HomePage(this.signOutGoogle);
+
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState(); //signOutGoogle);
 }
 
 class _HomePageState extends State<HomePage> {
   PageController pageController;
   int getPageIndex = 0;
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  //Function signOutGoogle;
+  //_HomePageState(this.signOutGoogle);
   void initState() {
     super.initState();
     pageController = PageController();
@@ -48,9 +38,21 @@ class _HomePageState extends State<HomePage> {
         duration: Duration(milliseconds: 400), curve: Curves.bounceInOut);
   }
 
+  Color _getActiveColor(int pageIndex) {
+    //if (pageIndex > 0) return Colors.black;
+    return pageIndex > 0 ? Colors.black : Colors.white;
+  }
+
+  Color _getBackgroudColorForScafffold(int pageIndex) {
+    //if (pageIndex == 0) return Colors.black;
+    return pageIndex > 0 ? Colors.white : Colors.black;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      backgroundColor: Colors.black,
       body: Stack(children: <Widget>[
         PageView(
           children: <Widget>[
@@ -58,7 +60,7 @@ class _HomePageState extends State<HomePage> {
             SearchPage(),
             UploadPage(),
             NotificationsPage(),
-            ProfilePage()
+            ProfilePage(), //signOutGoogle)
           ],
           controller: pageController,
           onPageChanged: _whenPageChanges,
@@ -69,19 +71,23 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: CupertinoTabBar(
         currentIndex: getPageIndex,
         onTap: _onTapChangePage,
-        backgroundColor: Colors.transparent, //Theme.of(context).accentColor,
-        activeColor: Colors.white,
-        inactiveColor: Colors.blueGrey,
+        backgroundColor: _getBackgroudColorForScafffold(
+            getPageIndex), //Colors.transparent, //Theme.of(context).accentColor,
+        activeColor: _getActiveColor(getPageIndex), //Colors.white,
+        inactiveColor: Colors.grey[400],
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home)),
-          BottomNavigationBarItem(icon: Icon(Icons.search)),
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.search), title: Text('Search')),
           BottomNavigationBarItem(
               icon: Icon(
             Icons.photo_camera,
             size: 37.0,
           )),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite)),
-          BottomNavigationBarItem(icon: Icon(Icons.person)),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite), title: Text('Inbox')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person), title: Text('Profile')),
         ],
       ),
     );

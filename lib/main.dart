@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
       title: 'Zine',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.black,
+        //scaffoldBackgroundColor: Colors.black,
         dialogBackgroundColor: Colors.black,
         primarySwatch: Colors.grey,
         accentColor: Colors.black,
