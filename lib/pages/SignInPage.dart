@@ -80,37 +80,38 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                     SizedBox(height: 40.0),
                     Container(
-                        height: 40.0,
-                        child: Material(
+                      height: 40.0,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
-                          shadowColor: Colors.greenAccent,
-                          color: Colors.green,
-                          elevation: 7.0,
-                          child: GestureDetector(
-                              onTap: () {
-                                signInWithGoogle().whenComplete(() {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return HomePage(); //isSignedIn ? HomePage(signOutGoogle): SignInPage();
-                                      },
-                                    ),
-                                  );
-                                });
-                              },
-                              //onTap: loginUser,
-                              child: Center(
-                                child: Text(
-                                  'LOGIN',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Montserrat',
-                                  ),
-                                ),
-                              )),
-                        )),
-                    SizedBox(height: 10.0),
+                          side: BorderSide(color: Colors.green),
+                        ),
+                        color: Colors.green,
+                        elevation: 7.0,
+                        onPressed: () {
+                          authService.signInWithGoogle().whenComplete(() {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return HomePage(); //isSignedIn ? HomePage(signOutGoogle): SignInPage();
+                                },
+                              ),
+                            );
+                          });
+                        },
+                        child: Center(
+                          child: Text(
+                            'LOGIN',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Montserrat',
+                            ),
+                          ),
+                        )
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
                     Container(
                       height: 40.0,
                       color: Colors.transparent,

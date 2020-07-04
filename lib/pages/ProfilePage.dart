@@ -24,7 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
         body: Center(
           child: RaisedButton(
             onPressed: () {
-              signOutGoogle();
+              authService.signOutGoogle();
               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
                 builder: (context) {
                   return SignInPage();

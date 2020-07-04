@@ -59,10 +59,12 @@ class _HomeWeapperState extends State<HomeWrapper> {
     if (signInAccount != null) {
       //then create a user
       setState(() {
+        print("isSignedIn set to true");
         isSignedIn = true;
       });
     } else {
       setState(() {
+        print("isSignedIn set to false");
         isSignedIn = false;
       });
     }
@@ -70,7 +72,7 @@ class _HomeWeapperState extends State<HomeWrapper> {
 
   Widget buildHomeScreen() {
     return RaisedButton.icon(
-      onPressed: signOutGoogle,
+      onPressed: authService.signOutGoogle,
       icon: Icon(Icons.close),
       label: Text('Sign Out'),
     );
