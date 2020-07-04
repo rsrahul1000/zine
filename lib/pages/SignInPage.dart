@@ -98,6 +98,7 @@ class _SignInPageState extends State<SignInPage> {
                                   );
                                 });
                               },
+                              //onTap: loginUser,
                               child: Center(
                                 child: Text(
                                   'LOGIN',

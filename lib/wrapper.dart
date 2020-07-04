@@ -20,125 +20,53 @@ class HomeWrapper extends StatefulWidget {
 class _HomeWeapperState extends State<HomeWrapper> {
   bool isSignedIn = false;
   GoogleSignInAccount _currentUser;
-  @override
-  void initState() {
-    super.initState();
-    googleSignIn.onCurrentUserChanged.listen((gSignInAccount) {
-      setState(() {
-        _currentUser = gSignInAccount;
-      });
-      if (_currentUser != null) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
-      } else {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => SignInPage()));
-      }
-    }, onError: (gError) {
-      print("Error Message: " + gError);
-    });
-  }
-
-  // controlSignIn(GoogleSignInAccount signInAccount) async {
-  //   if (signInAccount != null) {
-  //     //then create a user
-  //     setState(() {
-  //       isSignedIn = true;
-  //     });
-  //   } else {
-  //     setState(() {
-  //       isSignedIn = false;
-  //     });
-  //   }
-  // }
-
+  // @override
   // void initState() {
   //   super.initState();
-
-  //   gSignIn.onCurrentUserChanged.listen((gSignInAccount) {
-  //     controlSignIn(gSignInAccount);
+  //   googleSignIn.onCurrentUserChanged.listen((gSignInAccount) {
+  //     setState(() {
+  //       _currentUser = gSignInAccount;
+  //     });
+  //     if (_currentUser != null) {
+  //       Navigator.pushReplacement(
+  //           context, MaterialPageRoute(builder: (context) => HomePage()));
+  //     } else {
+  //       Navigator.pushReplacement(
+  //           context, MaterialPageRoute(builder: (context) => SignInPage()));
+  //     }
   //   }, onError: (gError) {
   //     print("Error Message: " + gError);
   //   });
-
-  //   gSignIn.signInSilently(suppressErrors: false).then((gSignInAccount) {
-  //     controlSignIn(gSignInAccount);
-  //   }).catchError((gError) {
-  //     print("Error Message: " + gError);
-  //   });
   // }
 
-  // controlSignIn(GoogleSignInAccount signInAccount) async {
-  //   if (signInAccount != null) {
-  //     //then create a user
-  //     setState(() {
-  //       isSignedIn = true;
-  //     });
-  //   } else {
-  //     setState(() {
-  //       isSignedIn = false;
-  //     });
-  //   }
-  // }
+  void initState() {
+    super.initState();
 
-  // loginUser() async {
-  //   try {
-  //     await gSignIn.signIn();
-  //   } catch (error) {
-  //     print(error);
-  //   }
-  // }
+    googleSignIn.onCurrentUserChanged.listen((gSignInAccount) {
+      controlSignIn(gSignInAccount);
+    }, onError: (gError) {
+      print("Error Message: " + gError.toString());
+    });
 
-  // logoutUser() async {
-  //   try {
-  //     await gSignIn.signOut();
-  //   } catch (error) {
-  //     print(error);
-  //   }
-  // }
+    googleSignIn.signInSilently(suppressErrors: false).then((gSignInAccount) {
+      controlSignIn(gSignInAccount);
+    }).catchError((gError) {
+      print("Error Message: " + gError.toString());
+    });
+  }
 
-  // Future<String> signInWithGoogle() async {
-  //   if (!isSignedIn) {
-  //     final GoogleSignInAccount googleSignInAccount =
-  //         await googleSignIn.signIn();
-  //     final GoogleSignInAuthentication googleSignInAuthentication =
-  //         await googleSignInAccount.authentication;
-
-  //     final AuthCredential credential = GoogleAuthProvider.getCredential(
-  //       accessToken: googleSignInAuthentication.accessToken,
-  //       idToken: googleSignInAuthentication.idToken,
-  //     );
-
-  //     final AuthResult authResult =
-  //         await _auth.signInWithCredential(credential);
-  //     final FirebaseUser user = authResult.user;
-
-  //     assert(!user.isAnonymous);
-  //     assert(await user.getIdToken() != null);
-
-  //     final FirebaseUser currentUser = await _auth.currentUser();
-  //     assert(user.uid == currentUser.uid);
-
-  //     if (user.uid == currentUser.uid) {
-  //       setState(() {
-  //         isSignedIn = true;
-  //       });
-  //     }
-
-  //     return 'signInWithGoogle succeeded: $user';
-  //   }
-  // }
-
-  // Future signOutGoogle() async {
-  //   await googleSignIn.signOut();
-  //   if (this.mounted) {
-  //     setState(() {
-  //       isSignedIn = false;
-  //     });
-  //   }
-  //   Navigator.pop(context);
-  //   print("User Sign Out");
-  // }
+  controlSignIn(GoogleSignInAccount signInAccount) async {
+    if (signInAccount != null) {
+      //then create a user
+      setState(() {
+        isSignedIn = true;
+      });
+    } else {
+      setState(() {
+        isSignedIn = false;
+      });
+    }
+  }
 
   Widget buildHomeScreen() {
     return RaisedButton.icon(
@@ -150,8 +78,6 @@ class _HomeWeapperState extends State<HomeWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return _currentUser != null
-        ? HomePage()
-        : SignInPage(); //isSignedIn ? HomePage(signOutGoogle) :
+    return isSignedIn ? HomePage() : SignInPage();
   }
 }

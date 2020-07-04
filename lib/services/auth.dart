@@ -40,3 +40,19 @@ void signOutGoogle() async {
 
   print("User Sign Out");
 }
+
+loginUser() async {
+  try {
+    googleSignIn.signIn();
+  } catch (error) {
+    print("Login error: " + error.toString());
+  }
+}
+
+void logoutUser() async {
+  //await googleSignIn.disconnect().whenComplete(() async {
+  await _auth.signOut();
+  //});
+  //await googleSignIn.signOut();
+  print("User Sign Out successfully");
+}

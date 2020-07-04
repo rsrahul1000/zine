@@ -31,6 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
               ), ModalRoute.withName('/'));
             },
+            //onPressed: logoutUser,
             child: Text("Signout"),
           ),
         )
