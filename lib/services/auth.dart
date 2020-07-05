@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 // class AuthService {
@@ -63,6 +65,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 // final AuthService authService = AuthService();
 
+//************************************* */
+
 abstract class BaseAuth {
   Future<String> signIn(String email, String password);
 
@@ -76,7 +80,7 @@ abstract class BaseAuth {
 
   Future<bool> isEmailVerified();
 
-  Future<String> signInWithGoogle();
+  Future<GoogleSignInAccount> signInWithGoogle();
 
   void signOutGoogle();
 }
@@ -120,7 +124,7 @@ class AuthServices implements BaseAuth {
     return user.isEmailVerified;
   }
 
-  Future<String> signInWithGoogle() async {
+  Future<GoogleSignInAccount> signInWithGoogle() async {
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
@@ -137,7 +141,8 @@ class AuthServices implements BaseAuth {
 
     final FirebaseUser currentUser = await _firebaseAuth.currentUser();
     assert(user.uid == currentUser.uid);
-    return 'signInWithGoogle succeeded: $user';
+
+    return googleSignInAccount; //user; //'signInWithGoogle succeeded: $user';
   }
 
   @override
@@ -150,3 +155,24 @@ class AuthServices implements BaseAuth {
 
 final AuthServices authService =
     AuthServices(); // add this to the bottom outside the class
+
+// /**************************/
+
+// class AuthService {
+//   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+//   final GoogleSignIn _googleSignIn = GoogleSignIn();
+//   FirebaseUser user;
+
+//   Future<void> signInWithGoogle() async {
+//     try {
+//       await _googleSignIn.signIn();
+//     } catch (error) {
+//       print(error);
+//     }
+//   }
+
+//   Future<void> signOutGoogle() => _googleSignIn.disconnect();
+
+// }
+
+// AuthService authService = AuthService();
