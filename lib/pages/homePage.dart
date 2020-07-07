@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:zine/pages/NotificationsPage.dart';
 import 'package:zine/pages/ProfilePage.dart';
 import 'package:zine/pages/SearchPage.dart';
@@ -7,6 +8,7 @@ import 'package:zine/pages/TimeLinePage.dart';
 import 'package:zine/pages/UploadPage.dart';
 import 'package:zine/widgets/home/home_header.dart';
 import 'package:flutter/services.dart';
+import 'package:zine/wrapper.dart';
 
 class HomePage extends StatefulWidget {
   // final Function signOutGoogle;
@@ -40,12 +42,12 @@ class _HomePageState extends State<HomePage> {
 
   Color _getActiveColor(int pageIndex) {
     //if (pageIndex > 0) return Colors.black;
-    return pageIndex > 0 ? Colors.black : Colors.white;
+    return (pageIndex == 0 || pageIndex == 2) ? Colors.white : Colors.black;
   }
 
   Color _getBackgroudColorForScafffold(int pageIndex) {
     //if (pageIndex == 0) return Colors.black;
-    return pageIndex > 0 ? Colors.white : Colors.black;
+    return (pageIndex == 0 || pageIndex == 2) ? Colors.black : Colors.white;
   }
 
   @override
@@ -58,7 +60,7 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             TimeLinePage(),
             SearchPage(),
-            UploadPage(),
+            UploadPage(gCurrentUser: currentUser),
             NotificationsPage(),
             ProfilePage(), //signOutGoogle)
           ],
