@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:zine/models/user.dart';
 import 'package:zine/pages/homePage.dart';
 import 'package:zine/services/auth.dart';
 
@@ -69,7 +70,9 @@ class _SignInPageState extends State<SignInPage> {
         "bio": "",
         "timestamp": timestamp,
       });
+      documentSnapshot = await userReference.document(gCurrentUser.id).get();
     }
+    currentUser = User.fromDocument(documentSnapshot);
   }
 
   Widget _showCircularProgress() {

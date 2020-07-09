@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
             SearchPage(),
             UploadPage(gCurrentUser: currentUser),
             NotificationsPage(),
-            ProfilePage(), //signOutGoogle)
+            ProfilePage(userProfileId: currentUser.id),
           ],
           controller: pageController,
           onPageChanged: _whenPageChanges,
