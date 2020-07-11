@@ -11,16 +11,18 @@ class _TimeLinePageState extends State<TimeLinePage> {
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
-      scrollDirection: Axis.vertical,
-      itemBuilder: (context, position) {
-        return Container(
-          color: Colors.black,
-          child: Stack(
-            children: <Widget>[AppVideoPlayer(), onScreenControls()],
-          ),
-        );
-      },
-      itemCount: 10
-    );
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, position) {
+          return Container(
+            color: Colors.black,
+            child: Stack(
+              children: <Widget>[
+                AppVideoPlayer(),
+                onScreenControls()
+              ],
+            ),
+          );
+        },
+        itemCount: 10);
   }
 }
