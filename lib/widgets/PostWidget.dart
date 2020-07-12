@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:zine/animations/spinner_animation.dart';
 import 'package:zine/models/user.dart';
+import 'package:zine/pages/CommentsPage.dart';
 import 'package:zine/resources/assets.dart';
 import 'package:zine/widgets/ProgressWidget.dart';
 import 'package:zine/widgets/home/audio_spinner_icon.dart';
@@ -214,7 +215,8 @@ class _PostState extends State<Post> {
                   ),
                   //comment button
                   GestureDetector(
-                    onTap: () => print("Show Comments"),
+                    onTap: () => _displayCommentsPanel(context,
+                        postId: postId, ownerId: ownerId, url: url),
                     child: videoControlAction(
                         icon: AppIcons.chat_bubble, label: "130"),
                   ),
@@ -229,6 +231,20 @@ class _PostState extends State<Post> {
         ],
       ),
     );
+  }
+
+  void _displayCommentsPanel(BuildContext context,
+      {String postId, String ownerId, String url}) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          // return Container(
+          //   padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+          //   child: Text("botttom comments"),
+          // );
+          return CommentsPage(
+              postId: postId, postOwnerId: ownerId, postImageurl: url);
+        });
   }
 
   Widget _postDesc() {

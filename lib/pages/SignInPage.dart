@@ -92,165 +92,136 @@ class _SignInPageState extends State<SignInPage> {
         _showCircularProgress(),
         Scaffold(
             resizeToAvoidBottomPadding: false,
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
-                        child: Text('Hi',
-                            style: TextStyle(
-                                fontSize: 80.0, fontWeight: FontWeight.bold)),
-                      ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(15.0, 175.0, 0.0, 0.0),
-                        child: Text('There',
-                            style: TextStyle(
-                                fontSize: 80.0, fontWeight: FontWeight.bold)),
-                      ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(220.0, 175.0, 0.0, 0.0),
-                        child: Text('.',
-                            style: TextStyle(
-                                fontSize: 80.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green)),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                    padding:
-                        EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
-                    child: Column(
+            resizeToAvoidBottomInset: false,
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    child: Stack(
                       children: <Widget>[
-                        TextField(
+                        Container(
+                          padding: EdgeInsets.fromLTRB(15.0, 90.0, 0.0, 0.0),
+                          child: Text('Hi',
+                              style: TextStyle(
+                                  fontSize: 80.0, fontWeight: FontWeight.bold)),
+                        ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(15.0, 175.0, 0.0, 0.0),
+                          child: Text('There',
+                              style: TextStyle(
+                                  fontSize: 80.0, fontWeight: FontWeight.bold)),
+                        ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(220.0, 175.0, 0.0, 0.0),
+                          child: Text('.',
+                              style: TextStyle(
+                                  fontSize: 80.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green)),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                      padding:
+                          EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                      child: Column(
+                        children: <Widget>[
+                          TextField(
+                              decoration: InputDecoration(
+                                  labelText: 'EMAIL',
+                                  labelStyle: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green),
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.green)))),
+                          SizedBox(height: 20.0),
+                          TextField(
                             decoration: InputDecoration(
-                                labelText: 'EMAIL',
+                                labelText: 'PASSWORD',
                                 labelStyle: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontWeight: FontWeight.bold,
                                     color: Colors.green),
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Colors.green)))),
-                        SizedBox(height: 20.0),
-                        TextField(
-                          decoration: InputDecoration(
-                              labelText: 'PASSWORD',
-                              labelStyle: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green),
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.green))),
-                          obscureText: true,
-                        ),
-                        SizedBox(height: 5.0),
-                        Container(
-                          alignment: Alignment(1.0, 0.0),
-                          padding: EdgeInsets.only(top: 15.0, left: 20.0),
-                          child: InkWell(
-                              child: Text('Forgot Password',
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Montserrat',
-                                      decoration: TextDecoration.underline))),
-                        ),
-                        SizedBox(height: 40.0),
-                        Container(
-                          height: 40.0,
-                          child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                                side: BorderSide(color: Colors.green),
-                              ),
-                              color: Colors.green,
-                              elevation: 7.0,
-                              // onPressed: () {
-                              //   authService.signInWithGoogle().whenComplete(() {
-                              //     Navigator.of(context).push(
-                              //       MaterialPageRoute(
-                              //         builder: (context) {
-                              //           return HomePage(); //isSignedIn ? HomePage(signOutGoogle): SignInPage();
-                              //         },
-                              //       ),
-                              //     );
-                              //   });
-                              // },
-                              onPressed: _navigationToHomePage,
-                              child: Center(
-                                child: Text(
-                                  'LOGIN',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Montserrat',
-                                  ),
-                                ),
-                              )),
-                        ),
-                        SizedBox(height: 20.0),
-                        Container(
-                          height: 40.0,
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(color: Colors.black),
-                            ),
-                            color: Colors.white,
-                            elevation: 7.0,
-                            onPressed: _navigationToHomePage,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Center(
-                                  child: ImageIcon(
-                                      AssetImage('assets/images/google.png')),
-                                  // child: CircleAvatar(
-                                  //   backgroundColor: Colors.white,
-                                  //   backgroundImage: AssetImage(
-                                  //       'assets/images/google.png'),
-                                  // ),
-                                ),
-                                Center(
-                                  child: Text(
-                                    '  LOG IN WITH GOOGLE',
+                                        BorderSide(color: Colors.green))),
+                            obscureText: true,
+                          ),
+                          SizedBox(height: 5.0),
+                          Container(
+                            alignment: Alignment(1.0, 0.0),
+                            padding: EdgeInsets.only(top: 15.0, left: 20.0),
+                            child: InkWell(
+                                child: Text('Forgot Password',
                                     style: TextStyle(
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Montserrat',
+                                        decoration: TextDecoration.underline))),
+                          ),
+                          SizedBox(height: 40.0),
+                          Container(
+                            height: 40.0,
+                            child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  side: BorderSide(color: Colors.green),
+                                ),
+                                color: Colors.green,
+                                elevation: 7.0,
+                                // onPressed: () {
+                                //   authService.signInWithGoogle().whenComplete(() {
+                                //     Navigator.of(context).push(
+                                //       MaterialPageRoute(
+                                //         builder: (context) {
+                                //           return HomePage(); //isSignedIn ? HomePage(signOutGoogle): SignInPage();
+                                //         },
+                                //       ),
+                                //     );
+                                //   });
+                                // },
+                                onPressed: _navigationToHomePage,
+                                child: Center(
+                                  child: Text(
+                                    'LOGIN',
+                                    style: TextStyle(
+                                      color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Montserrat',
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
+                                )),
                           ),
-                        ),
-                        SizedBox(height: 20.0),
-                        Container(
-                          height: 40.0,
-                          color: Colors.transparent,
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.black,
-                                      style: BorderStyle.solid,
-                                      width: 1.0),
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(20.0)),
+                          SizedBox(height: 20.0),
+                          Container(
+                            height: 40.0,
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                side: BorderSide(color: Colors.black),
+                              ),
+                              color: Colors.white,
+                              elevation: 7.0,
+                              onPressed: _navigationToHomePage,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Center(
-                                    child: ImageIcon(AssetImage(
-                                        'assets/images/facebook.png')),
+                                    child: ImageIcon(
+                                        AssetImage('assets/images/google.png')),
+                                    // child: CircleAvatar(
+                                    //   backgroundColor: Colors.white,
+                                    //   backgroundImage: AssetImage(
+                                    //       'assets/images/google.png'),
+                                    // ),
                                   ),
                                   Center(
                                     child: Text(
-                                      ' LOG IN WITH FACEBOOK',
+                                      '  LOG IN WITH GOOGLE',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontFamily: 'Montserrat',
@@ -258,33 +229,66 @@ class _SignInPageState extends State<SignInPage> {
                                     ),
                                   )
                                 ],
-                              )),
-                        ),
-                      ],
-                    )),
-                SizedBox(height: 15.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'New To Zine ?',
-                      style: TextStyle(fontFamily: 'Montserrat'),
-                    ),
-                    SizedBox(width: 5.0),
-                    InkWell(
-                      onTap: () {},
-                      child: Text(
-                        'Register',
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.underline),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20.0),
+                          Container(
+                            height: 40.0,
+                            color: Colors.transparent,
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.black,
+                                        style: BorderStyle.solid,
+                                        width: 1.0),
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Center(
+                                      child: ImageIcon(AssetImage(
+                                          'assets/images/facebook.png')),
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        ' LOG IN WITH FACEBOOK',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Montserrat',
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )),
+                          ),
+                        ],
+                      )),
+                  SizedBox(height: 15.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'New To Zine ?',
+                        style: TextStyle(fontFamily: 'Montserrat'),
                       ),
-                    )
-                  ],
-                )
-              ],
+                      SizedBox(width: 5.0),
+                      InkWell(
+                        onTap: () {},
+                        child: Text(
+                          'Register',
+                          style: TextStyle(
+                              color: Colors.green,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
             )),
       ],
     );
