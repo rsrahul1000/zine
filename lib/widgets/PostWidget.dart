@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:zine/animations/spinner_animation.dart';
 import 'package:zine/models/user.dart';
 import 'package:zine/pages/CommentsPage.dart';
+import 'package:zine/pages/ProfilePage.dart';
 import 'package:zine/resources/assets.dart';
 import 'package:zine/widgets/ProgressWidget.dart';
 import 'package:zine/widgets/home/audio_spinner_icon.dart';
@@ -158,7 +159,7 @@ class _PostState extends State<Post> {
         "type": "like",
         "username": currentUser.username,
         "userId": currentUser.id,
-        "timestamp": timestamp,
+        "timestamp": DateTime.now(),
         "url": url,
         "postId": postId,
         "userProfileImage": currentUser.url,
@@ -313,7 +314,7 @@ class _PostState extends State<Post> {
                       height: 50,
                       width: 50,
                       child: GestureDetector(
-                        onTap: () => print("Show Profile"),
+                        onTap: () => _displayUserProfile(context, userProfileId: user.id),
                         child: CircleAvatar(
                           backgroundImage: CachedNetworkImageProvider(user.url),
                           backgroundColor: Colors.grey,
@@ -343,6 +344,13 @@ class _PostState extends State<Post> {
             ),
           );
         });
+  }
+
+  _displayUserProfile(BuildContext context, {String userProfileId}) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ProfilePage(userProfileId: userProfileId)));
   }
 
   @override
