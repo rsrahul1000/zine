@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:zine/wrapper.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  //Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -19,3 +24,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+//flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi

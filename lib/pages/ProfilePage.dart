@@ -161,7 +161,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  _controlUnfollowUser() {
+  _controlUnfollowUser() async {
     setState(() {
       following = false;
     });
@@ -198,9 +198,27 @@ class _ProfilePageState extends State<ProfilePage> {
         document.reference.delete();
       }
     });
+
+    //for timeline page
+    // QuerySnapshot querySnapshot = await postReference
+    //     .document(widget.userProfileId)
+    //     .collection("userPosts")
+    //     .getDocuments();
+
+    // String userId = widget.userProfileId;
+    // timelineReference
+    //     .document(currentOnlineUserId)
+    //     .collection("timelinePosts")
+    //     .document(userId)
+    //     .get()
+    //     .then((document) {
+    //   if (document.exists && document.documentID.toString() == userId) {
+    //     document.reference.delete();
+    //   }
+    // });
   }
 
-  _controlFollowUser() {
+  _controlFollowUser() async {
     setState(() {
       following = true;
     });
@@ -221,12 +239,28 @@ class _ProfilePageState extends State<ProfilePage> {
         .document(currentOnlineUserId)
         .setData({
       "type": "follow",
-      "ownerId": widget.userProfileId,
+      "ownerId": widget.userProfileId, // currnet user who is logined (userid)
       "username": currentUser.username,
       "timestamp": DateTime.now(),
       "userProfileImg": currentUser.url,
-      "userId": currentOnlineUserId,
+      "userId": currentOnlineUserId, // followerid
     });
+
+    //for timeline page
+    // QuerySnapshot querySnapshot = await postReference
+    //     .document(widget.userProfileId)
+    //     .collection("userPosts")
+    //     .getDocuments();
+
+    // querySnapshot.documents.forEach((document) {
+    //   if (document.exists) {
+    //     timelineReference
+    //         .document(currentOnlineUserId)
+    //         .collection("timelinePosts")
+    //         .document(document.documentID)
+    //         .setData(document.data);
+    //   }
+    // });
   }
 
   _createButtonTitleAndFunction({String title, Function performFunction}) {

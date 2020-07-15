@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
       body: Stack(children: <Widget>[
         PageView(
           children: <Widget>[
-            TimeLinePage(),
+            TimeLinePage(gCurrentUser: currentUser),
             SearchPage(),
             UploadPage(gCurrentUser: currentUser),
             NotificationsPage(),

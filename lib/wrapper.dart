@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:zine/pages/CreateAccountPage.dart';
 import 'package:zine/pages/SignInPage.dart';
@@ -10,6 +10,9 @@ import 'package:zine/pages/homePage.dart';
 import 'package:zine/pages/SearchPage.dart';
 import 'package:zine/services/auth.dart';
 import 'models/user.dart';
+import 'dart:io';
+
+//show Platform;
 
 // final GoogleSignIn gSignIn = GoogleSignIn();
 
@@ -23,6 +26,7 @@ final activityFeedReference = Firestore.instance.collection("feed");
 final commentsReference = Firestore.instance.collection("comments");
 final followersReference = Firestore.instance.collection("followers");
 final followingReference = Firestore.instance.collection("following");
+final timelineReference = Firestore.instance.collection("timeline");
 
 final DateTime timestamp = DateTime.now();
 User currentUser;
@@ -43,6 +47,8 @@ class _HomeWeapperState extends State<HomeWrapper> {
   GoogleSignInAccount _currentUser = null;
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
   String _userId = "";
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void initState() {
     super.initState();
@@ -87,6 +93,8 @@ class _HomeWeapperState extends State<HomeWrapper> {
         authStatus = AuthStatus.LOGGED_IN;
         isSignedIn = true;
       });
+
+      configureRealTImePushNotifications();
     } else {
       setState(() {
         print("isSignedIn set to false");
@@ -94,6 +102,43 @@ class _HomeWeapperState extends State<HomeWrapper> {
         isSignedIn = false;
       });
     }
+  }
+
+  configureRealTImePushNotifications() {
+    final GoogleSignInAccount gUser = googleSignIn.currentUser;
+    if (Platform.isIOS) {
+      getIOSPermissions();
+    }
+    _firebaseMessaging.getToken().then((token) {
+      userReference
+          .document(gUser.id)
+          .updateData({"androidNotificationToken": token});
+    });
+
+    _firebaseMessaging.configure(onMessage: (Map<String, dynamic> msg) async {
+      final String recipientId = msg["data"]["recipient"];
+      final String body = msg["notification"]["body"];
+
+      if (recipientId == gUser.id) {
+        SnackBar snackBar = SnackBar(
+          backgroundColor: Colors.grey,
+          content: Text(
+            body,
+            style: TextStyle(color: Colors.black),
+            overflow: TextOverflow.ellipsis,
+          ),
+        );
+        _scaffoldKey.currentState.showSnackBar(snackBar);
+      }
+    });
+  }
+
+  getIOSPermissions() {
+    _firebaseMessaging.requestNotificationPermissions(
+        IosNotificationSettings(alert: true, badge: true, sound: true));
+    _firebaseMessaging.onIosSettingsRegistered.listen((settings) {
+      print("Settings Registered: $settings");
+    });
   }
 
   saveUserInfoToFirestore() async {
@@ -117,6 +162,13 @@ class _HomeWeapperState extends State<HomeWrapper> {
         "bio": "",
         "timestamp": timestamp,
       });
+
+      await followersReference
+          .document(gCurrentUser.id)
+          .collection("userFollowers")
+          .document(gCurrentUser.id)
+          .setData({});
+
       documentSnapshot = await userReference.document(gCurrentUser.id).get();
     }
     currentUser = User.fromDocument(documentSnapshot);

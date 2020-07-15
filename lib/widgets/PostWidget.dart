@@ -78,6 +78,7 @@ class _PostState extends State<Post> {
   final String location;
   final String url;
   int likeCount;
+  int commentCount = 0;
   bool isLiked;
   bool showHeart = false;
   final String currentOnlineUserId = currentUser?.id;
@@ -187,7 +188,21 @@ class _PostState extends State<Post> {
     );
   }
 
+  _getCommentCount() async {
+    QuerySnapshot commentsQuerySnapshot = await commentsReference
+        .document(postId)
+        .collection("comments")
+        .getDocuments();
+    if (this.mounted) {
+      setState(() {
+        this.commentCount = commentsQuerySnapshot.documents.length;
+      });
+    }
+  }
+
   Widget _onScreenControls() {
+    bool isPostOwner = currentOnlineUserId == ownerId;
+    _getCommentCount();
     return Container(
       //color: Colors.red,
       child: Row(
@@ -219,12 +234,20 @@ class _PostState extends State<Post> {
                     onTap: () => _displayCommentsPanel(context,
                         postId: postId, ownerId: ownerId, url: url),
                     child: videoControlAction(
-                        icon: AppIcons.chat_bubble, label: "130"),
+                        icon: AppIcons.chat_bubble,
+                        label: "$commentCount" ?? "0"),
                   ),
                   //share button
                   videoControlAction(
                       icon: AppIcons.reply, label: "Share", size: 27),
-                  SpinnerAnimation(body: audioSpinner())
+                  SpinnerAnimation(body: audioSpinner()),
+
+                  //More button for deleting the post
+                  isPostOwner
+                      ? IconButton(
+                          icon: Icon(Icons.more_horiz, color: Colors.white),
+                          onPressed: () => _controlPostDelete(context))
+                      : Text(""),
                 ],
               ),
             ),
@@ -232,6 +255,79 @@ class _PostState extends State<Post> {
         ],
       ),
     );
+  }
+
+  _controlPostDelete(BuildContext mContext) {
+    return showDialog(
+        context: mContext,
+        builder: (context) {
+          return SimpleDialog(
+            title: Text(
+              "What do you want?",
+              style: TextStyle(color: Colors.white),
+            ),
+            children: <Widget>[
+              SimpleDialogOption(
+                child: Text(
+                  "Delete",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  _removeUserPost();
+                },
+              ),
+              SimpleDialogOption(
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        });
+  }
+
+  _removeUserPost() async {
+    postReference
+        .document(ownerId)
+        .collection("userPosts")
+        .document(postId)
+        .get()
+        .then((document) {
+      if (document.exists) {
+        document.reference.delete();
+      }
+    });
+
+    //remove from firestore
+    storageReference.child("post_$postId.jpg").delete();
+
+    //remove notification also
+    QuerySnapshot querySnapshot = await activityFeedReference
+        .document(ownerId)
+        .collection("feedItems")
+        .where("postId", isEqualTo: postId)
+        .getDocuments();
+    querySnapshot.documents.forEach((document) {
+      if (document.exists) {
+        document.reference.delete();
+      }
+    });
+
+    //remove comments for this post
+    QuerySnapshot commentsQuerySnapshot = await commentsReference
+        .document(postId)
+        .collection("comments")
+        .getDocuments();
+    commentsQuerySnapshot.documents.forEach((document) {
+      if (document.exists) {
+        document.reference.delete();
+      }
+    });
   }
 
   void _displayCommentsPanel(BuildContext context,
@@ -314,7 +410,8 @@ class _PostState extends State<Post> {
                       height: 50,
                       width: 50,
                       child: GestureDetector(
-                        onTap: () => _displayUserProfile(context, userProfileId: user.id),
+                        onTap: () => _displayUserProfile(context,
+                            userProfileId: user.id),
                         child: CircleAvatar(
                           backgroundImage: CachedNetworkImageProvider(user.url),
                           backgroundColor: Colors.grey,

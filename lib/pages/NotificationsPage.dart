@@ -129,7 +129,8 @@ class NotificationsItem extends StatelessWidget {
   _configureMediaPreview(context) {
     if (type == "comment" || type == "like") {
       mediaPreview = GestureDetector(
-        onTap: () => _displaFullPost(context),
+        //onTap: () => _displaFullPost(context),
+        onTap: () => _displayOwnerProfile(context, userProfileId: currentUser.id),
         child: Container(
           height: 50.0,
           width: 50.0,
@@ -161,14 +162,20 @@ class NotificationsItem extends StatelessWidget {
     }
   }
 
-  _displaFullPost(context) {
+  // _displaFullPost(context) {
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) => PostScreenPage(
+  //                 postId: postId,
+  //                 userId: userId,
+  //               )));
+  // }
+  _displayOwnerProfile(BuildContext context, {String userProfileId}) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => PostScreenPage(
-                  postId: postId,
-                  userId: userId,
-                )));
+            builder: (context) => ProfilePage(userProfileId: currentUser.id)));
   }
 
   _displayUserProfile(BuildContext context, {String userProfileId}) {
